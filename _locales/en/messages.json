@@ -1,0 +1,44 @@
+{
+	"extTitle": {
+		"message": "Amaranth Password Manager"
+	},
+	"extDescription": {
+		"message": "Filling password for you using Amaranth algorithm"
+	},
+	"defaultIconTitle": {
+		"message": "Click to open/close Amaranth on this website"
+	},
+	"disabledIconTitle": {
+		"message": "Click to open Amaranth on this website"
+	},
+	"enabledIconTitle": {
+		"message": "Click to close Amaranth on this website"
+	},
+	"frameTitle": {
+		"message": "Amaranth"
+	},
+	"framePass": {
+		"message": "Main password"
+	},
+	"frameSite": {
+		"message": "Site name"
+	},
+	"frameType": {
+		"message": "Password Type"
+	},
+	"framePIN": {
+		"message": "PIN"
+	},
+	"frameShort": {
+		"message": "Short"
+	},
+	"frameClassic": {
+		"message": "Classic"
+	},
+	"frameLong": {
+		"message": "Long"
+	},
+	"frameUsage": {
+		"message": "Usage"
+	}
+}

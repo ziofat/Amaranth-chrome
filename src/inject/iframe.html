@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html ng-app="Amaranth">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="../../css/surface_styles.css">
+	<link rel="stylesheet" type="text/css" href="../../css/iframe.css">
+</head>
+<body>
+	<div class="container bg--pink" id="header">
+		<h4 class="g--11 no-margin" i18nmsg="__MSG_frameTitle__"></h4>
+		<h4 class="no-margin right" id="close">X</h4>
+	</div>
+	<div class="container">
+		<form class="form">
+			<div class="group">
+				<input class="text-field" type="password" required id="mainpass" autofocus>
+				<label class="group-label" i18nmsg="__MSG_framePass__"></label>
+			</div>
+			<div class="group">
+				<input class="text-field" type="text" required id="site">
+				<label class="group-label" i18nmsg="__MSG_frameSite__"></label>
+			</div>
+			<label i18nmsg="__MSG_frameType__"></label>
+			<p class="g--12 password-type">
+				<input type="radio" name="passtype" value="PIN"> <span i18nmsg="__MSG_framePIN__"></span>
+			</p>
+			<p class="g--12 password-type">
+				<input type="radio" name="passtype" value="Short"> <span i18nmsg="__MSG_frameShort__"></span>
+			</p>
+			<p class="g--12 password-type">
+				<input type="radio" name="passtype" value="Classic" checked> <span i18nmsg="__MSG_frameClassic__"></span>
+			</p>
+			<p class="g--12 password-type">
+				<input type="radio" name="passtype" value="Long"> <span i18nmsg="__MSG_frameLong__"></span>
+			</p>
+			<p class="right no-margin"><a href="https://github.com/ziofat/Amaranth" target="_blank" i18nmsg="__MSG_frameUsage__"></a></p>
+		</div>
+	</div>
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/amaranth.js"></script>
+	<script type="text/javascript" src="../../js/iframe.js"></script>
+</body>
+</html>

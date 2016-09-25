@@ -1,0 +1,10 @@
+#amaranth{
+	position: absolute; 
+	z-index:999999; 
+	padding: 0px;
+}
+
+#amaranth-iframe{
+	height:318px;
+	width: 256px;
+}

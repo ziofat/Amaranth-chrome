@@ -1,0 +1,87 @@
+body{
+	min-height: 250px; 
+	background: white; 
+	width:256px;
+	border: 2px solid #E91E63;
+}
+.container{
+	width:100%;
+}
+#header{
+	height:48px;
+	padding:12px;
+}
+#header > h4{
+	color:white;
+	line-height: 100%;
+}
+form.form{
+	width: 100%;
+	margin: 16px 24px;
+}
+
+input.text-field{
+	margin: 8px 0px;
+}
+
+.password-type{
+	margin: 2px 0;
+}
+
+#close{
+	cursor: pointer;
+}
+
+* { box-sizing:border-box; }
+
+/* form starting stylings ------------------------------- */
+.group { 
+	position:relative; 
+	margin-bottom:16px; 
+}
+input.text-field{
+	padding:10px 10px 6px 5px;
+	display:block;
+}
+input.text-field:focus{ outline:none; }
+
+/* LABEL ======================================= */
+label.group-label{
+	color:#9E9E9E; 
+	font-weight:normal;
+	position:absolute;
+	pointer-events:none;
+	left:5px;
+	top:10px;
+	transition:0.2s ease all; 
+	-moz-transition:0.2s ease all; 
+	-webkit-transition:0.2s ease all;
+}
+
+/* active state */
+input.text-field:focus ~ label.group-label, input.text-field:valid ~ label.group-label {
+	top:-8px;
+	font-size:12px;
+	color:#E91E63;
+}
+
+/* active state */
+input.text-field:focus ~ .highlight {
+	-webkit-animation:inputHighlighter 0.3s ease;
+	-moz-animation:inputHighlighter 0.3s ease;
+	animation:inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+@-webkit-keyframes inputHighlighter {
+	from { background:#E91E63; }
+	to 	{ width:0; background:transparent; }
+}
+@-moz-keyframes inputHighlighter {
+	from { background:#E91E63; }
+	to 	{ width:0; background:transparent; }
+}
+@keyframes inputHighlighter {
+	from { background:#E91E63; }
+	to 	{ width:0; background:transparent; }
+}

@@ -1,0 +1,44 @@
+{
+	"extTitle": {
+		"message": "不朽花 密码管理"
+	},
+	"extDescription": {
+		"message": "使用不朽花算法在网页上输入密码"
+	},
+	"defaultIconTitle": {
+		"message": "点此在本网站上启用/停用不朽花"
+	},
+	"disabledIconTitle": {
+		"message": "点此在本网站上启用不朽花"
+	},
+	"enabledIconTitle": {
+		"message": "点此在本网站上停用不朽花"
+	},
+	"frameTitle": {
+		"message": "Amaranth"
+	},
+	"framePass": {
+		"message": "主密码"
+	},
+	"frameSite": {
+		"message": "站点名"
+	},
+	"frameType": {
+		"message": "密码类型"
+	},
+	"framePIN": {
+		"message": "PIN"
+	},
+	"frameShort": {
+		"message": "短型"
+	},
+	"frameClassic": {
+		"message": "经典"
+	},
+	"frameLong": {
+		"message": "长型"
+	},
+	"frameUsage": {
+		"message": "使用说明"
+	}
+}
