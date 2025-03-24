@@ -13,52 +13,60 @@ var url = new URL(window.location);
 var hostname = url.hostname;
 chrome.storage.sync.get('offlist', function(item){
 	var list = item.offlist;
-	var using = $.inArray(hostname, list);
-	if(using >= 0){
+	var using = list ? list.includes(hostname) : false;
+	if(using){
 		amaranthStatus.using = false;
 	}
 });
 
-$('<div>', {
-	id: 'amaranth',
-	style: 'display: none;'
-}).appendTo('body');
-$('<iframe>', {
-	src: chrome.extension.getURL('src/inject/iframe.html'),
-	id: 'amaranth-iframe',
-	frameborder: 0,
-	scrolling: 'no'
-}).appendTo('#amaranth');
+var amaranthDiv = document.createElement('div');
+amaranthDiv.id = 'amaranth';
+amaranthDiv.style.display = 'none';
+document.body.appendChild(amaranthDiv);
 
-$(document).on('click', 'input[type=password]', function (event) {
+var amaranthIframe = document.createElement('iframe');
+amaranthIframe.src = chrome.runtime.getURL('src/inject/iframe.html');
+amaranthIframe.id = 'amaranth-iframe';
+amaranthIframe.frameborder = '0';
+amaranthIframe.scrolling = 'no';
+document.getElementById('amaranth').appendChild(amaranthIframe);
+
+document.addEventListener('click', function (event) {
+	var target = event.target;
+	var isPasswordInput = target.tagName === 'INPUT' && target.type === 'password';
+	if (!isPasswordInput) {
+		closeFrame();
+		return;
+	}
 	if(amaranthStatus.using == false){
 		return;
 	}
-	amaranthStatus.target = $(this);
+	amaranthStatus.target = target;
 	amaranthStatus.iframe = null;
 	if(isIframe()){
 		chrome.runtime.sendMessage({
 			action:'forward_0',
 			realAction:'openFrame',
 			element: {
-				top: $(this).offset().top,
-				left: $(this).offset().left,
-				height: $(this).outerHeight(),
-				width: $(this).outerWidth(),
+				top: target.offsetTop,
+				left: target.offsetLeft,
+				height: target.offsetHeight,
+				width: target.offsetWidth,
 				iframeSrc: document.baseURI
 			}
 		});
 	}else{
-		var position = getPosition($(this));
-		var elem = $('#amaranth');
-		elem.attr('style','left:'+position.left+'px;top:'+position.top+"px;");
-		elem.show();
+		var position = getPosition(target);
+		var elem = document.getElementById('amaranth');
+		elem.style.left = position.left + 'px';
+		elem.style.top = position.top + 'px';
+		elem.style.display = 'block';
 		amaranthStatus.visible = true;
 	}
 	chrome.runtime.sendMessage({action:"updateCache"});
 });
 
-$(window).resize(function(){
+window.addEventListener('resize', function(){
 	if(amaranthStatus.visible){
 		var position = {};
 		if(amaranthStatus.iframe != null){
@@ -66,14 +74,9 @@ $(window).resize(function(){
 		}else{
 			position = getPosition(amaranthStatus.target);
 		}
-		var elem = $('#amaranth');
-		elem.attr('style','left:'+position.left+'px;top:'+position.top+"px;");
-	}
-});
-
-$(document).click(function(event){
-	if(!$(event.target).is('input:password')){
-		closeFrame();
+		var elem = document.getElementById('amaranth');
+		elem.style.left = position.left + 'px';
+		elem.style.top = position.top + 'px';
 	}
 });
 
@@ -81,7 +84,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	switch(request.realAction){
 		case 'fillIn':
 			if(amaranthStatus.target){
-				$(amaranthStatus.target).val(request.password);
+				amaranthStatus.target.value = request.password;
+				var event = new Event('change', { bubbles: true });
+				amaranthStatus.target.dispatchEvent(event);
 			}
 			break;
 		case 'closeFrame':
@@ -100,23 +105,24 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 function openFrame(elem){
-	var iframe = $('iframe[src="' + elem.iframeSrc + '"');
+	var iframe = document.querySelector('iframe[src="' + elem.iframeSrc + '"');
 	amaranthStatus.iframe = iframe;
 	amaranthStatus.target = elem;
 	var position = getPositionForIframe(iframe, elem);
-	var elem = $('#amaranth');
-	elem.attr('style','left:'+position.left+'px;top:'+position.top+"px;");
-	elem.show();
+	var amaranthElem = document.getElementById('amaranth');
+	amaranthElem.style.left = position.left + 'px';
+	amaranthElem.style.top = position.top + 'px';
+	amaranthElem.style.display = 'block';
 	amaranthStatus.visible = true;
 }
 
 function getPositionForIframe(iframe, elem){
 	var framePosition = {
-		top: iframe.offset().top,
-		left: iframe.offset().left,
+		top: iframe.offsetTop,
+		left: iframe.offsetLeft,
 	}
 	var position = {left: 0, top: 0};
-	if((framePosition.left + elem.left - $(document).scrollLeft()) + elem.width + $('#amaranth').outerWidth() <= $(window).width()){
+	if((framePosition.left + elem.left - document.documentElement.scrollLeft) + elem.width + document.getElementById('amaranth').offsetWidth <= document.documentElement.clientWidth){
 		position.left = framePosition.left + elem.left + elem.width;
 		position.top = framePosition.top + elem.top;
 	}else{
@@ -127,8 +133,8 @@ function getPositionForIframe(iframe, elem){
 }
 
 function closeFrame(){
-	var elem = $('#amaranth');
-	elem.hide();
+	var elem = document.getElementById('amaranth');
+	elem.style.display = 'none';
 	amaranthStatus.visible = false;
 }
 
@@ -138,13 +144,14 @@ function isIframe(element){
 
 function getPosition(element){
 	var position = {left: 0, top: 0};
+	var rect = element.getBoundingClientRect();
 	var elemPos = {
-		top: element.offset().top,
-		left: element.offset().left,
-		height: element.outerHeight(),
-		width: element.outerWidth()
+		top: rect.top + document.documentElement.scrollTop,
+		left: rect.left + document.documentElement.scrollLeft,
+		height: element.offsetHeight,
+		width: element.offsetWidth
 	}
-	if((elemPos.left - $(document).scrollLeft()) + elemPos.width + $('#amaranth').outerWidth() <= $(window).width()){
+	if((elemPos.left - document.documentElement.scrollLeft) + elemPos.width + document.getElementById('amaranth').offsetWidth <= document.documentElement.clientWidth){
 		position.left = elemPos.left + elemPos.width;
 		position.top = elemPos.top;
 	}else{

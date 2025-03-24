@@ -1,7 +1,7 @@
 {
 	"name":"__MSG_extTitle__",
 	"version":"1.0.0",
-	"manifest_version" : 2,
+	"manifest_version" : 3,
 
 	"description":"__MSG_extDescription__",
 	"homepage_url" : "https://ziofat.github.io/Amaranth",
@@ -14,33 +14,39 @@
 	"default_locale":"en",
 
 	"background": {
-		"page": "src/bg/background.html",
-		"persistent": true
+		"service_worker": "src/bg/background.js"
 	},
 
-	"page_action": {
-		"default_icon": {
-			"19": "icons/active/icon19.png",
-			"38": "icons/active/icon38.png"
-		},
-		"default_title": "__MSG_defaultIconTitle__"
-    },
+	"action": {
+		"default_title": "Turn off on this site"
+	},
 
 	"permissions":[
 		"tabs",
 		"storage"
 	],
 
+	"host_permissions": [
+		"*://*/*"
+	],
+
 	"content_scripts":[
 		{
 			"matches":["https://*/*", "http://*/*"],
-			"js":["js/jquery.min.js", "src/inject/inject.js"],
+			"js":["src/inject/inject.js"],
 			"css":["src/inject/inject.css"],
 			"all_frames":true,
 			"run_at":"document_end"
 		}
 	],
 	"web_accessible_resources":[
-		"src/inject/iframe.html"
+		{
+			"resources": ["src/inject/iframe.html"],
+			"matches": ["<all_urls>"]
+		},
+		{
+			"resources": ["js/jquery.min.js", "js/amaranth.js", "js/iframe.js"],
+			"matches": ["<all_urls>"]
+		}
 	]
 }
